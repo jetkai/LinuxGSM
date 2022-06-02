@@ -1,0 +1,47 @@
+# This is a basic workflow to help you get started with Actions
+
+name: gameserver
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on: push
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+      - run: npm install gamedig -g
+      # Runs a single command using the runners shell
+      - name: linuxgsm.sh pre-test setup
+        run: chmod +x lgsm/functions/*
+      - name: ./linuxgsm.sh (get-opt)
+        run: bash ./linuxgsm.sh
+      - name: ./linuxgsm.sh list
+        run: bash ./linuxgsm.sh list
+      - name: ./linuxgsm.sh vhserver
+        run: bash ./linuxgsm.sh vhserver
+      - name: ./vhserver (get-opt)
+        run: bash ./vhserver
+      - name: ./vhserver dev
+        run: bash ./vhserver dev
+      # Install
+      - name: ./vhserver auto-install
+        run: bash ./vhserver auto-install
+      # Speed up messages
+      - name: Speed up message display
+        run: echo "sleeptime=\"0.1\"" > lgsm/config-lgsm/vhserver/common.cfg
+      - name: ./vhserver start
+        run: bash ./vhserver start
+      - name: ./vhserver monitor (online)
+        run: |
+          bash ./vhserver monitor
