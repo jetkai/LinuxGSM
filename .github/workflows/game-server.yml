@@ -15,23 +15,15 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: "16"
       - run: npm install gamedig -g
       # Runs a single command using the runners shell
-      - name: linuxgsm.sh pre-test setup
-        run: chmod +x lgsm/functions/*
-      - name: ./linuxgsm.sh (get-opt)
-        run: bash ./linuxgsm.sh
-      - name: ./linuxgsm.sh list
-        run: bash ./linuxgsm.sh list
+      - name: download linuxgsm.sh
+        run: wget -O linuxgsm.sh https://linuxgsm.sh && chmod +x linuxgsm.sh
       - name: ./linuxgsm.sh vhserver
         run: bash ./linuxgsm.sh vhserver
-      - name: ./vhserver (get-opt)
-        run: bash ./vhserver
       - name: ./vhserver dev
         run: bash ./vhserver dev
       # Install
