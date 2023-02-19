@@ -33,6 +33,7 @@ lgsmlogdir="${logdir}/lgsm"
 steamcmddir="${HOME}/.steam/steamcmd"
 serverfiles="${rootdir}/serverfiles"
 modulesdir="${lgsmdir}/modules"
+functionsdir="${lgsmdir}/modules" # legacy
 tmpdir="${lgsmdir}/tmp"
 datadir="${lgsmdir}/data"
 lockdir="${lgsmdir}/lock"
