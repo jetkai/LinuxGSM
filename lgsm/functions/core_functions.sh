@@ -1,12 +1,12 @@
 #!/bin/bash
-# LinuxGSM core_modules.sh module
+# LinuxGSM core_functions.sh module
 # Author: Daniel Gibbs
 # Contributors: http://linuxgsm.com/contrib
 # Website: https://linuxgsm.com
-# Description: Defines all modules to allow download and execution of modules using fn_fetch_function.
-# This function is called first before any other function. Without this file other modules will not load.
+# Description: Defines all functions to allow download and execution of functions using fn_fetch_function.
+# This function is called first before any other function. Without this file other functions will not load.
 
-moduleselfname="$(basename "$(readlink -f "${BASH_SOURCE[0]}")")"
+functionselfname="$(basename "$(readlink -f "${BASH_SOURCE[0]}")")"
 
 modulesversion="v23.1.0"
 
@@ -15,27 +15,27 @@ modulesversion="v23.1.0"
 core_dl.sh() {
 	functionfile="${FUNCNAME[0]}"
 	if [ "$(type fn_fetch_core_dl 2> /dev/null)" ]; then
-		fn_fetch_core_dl "lgsm/modules" "core_dl.sh" "${modulesdir}" "chmodx" "run" "noforcedl" "nohash"
+		fn_fetch_core_dl "lgsm/functions" "core_dl.sh" "${functionsdir}" "chmodx" "run" "noforcedl" "nohash"
 	else
-		fn_bootstrap_fetch_file_github "lgsm/modules" "core_dl.sh" "${modulesdir}" "chmodx" "run" "noforcedl" "nohash"
+		fn_bootstrap_fetch_file_github "lgsm/functions" "core_dl.sh" "${functionsdir}" "chmodx" "run" "noforcedl" "nohash"
 	fi
 }
 
 core_messages.sh() {
 	functionfile="${FUNCNAME[0]}"
 	if [ "$(type fn_fetch_core_dl 2> /dev/null)" ]; then
-		fn_fetch_core_dl "lgsm/modules" "core_messages.sh" "${modulesdir}" "chmodx" "run" "noforcedl" "nohash"
+		fn_fetch_core_dl "lgsm/functions" "core_messages.sh" "${functionsdir}" "chmodx" "run" "noforcedl" "nohash"
 	else
-		fn_bootstrap_fetch_file_github "lgsm/modules" "core_messages.sh" "${modulesdir}" "chmodx" "run" "noforcedl" "nohash"
+		fn_bootstrap_fetch_file_github "lgsm/functions" "core_messages.sh" "${functionsdir}" "chmodx" "run" "noforcedl" "nohash"
 	fi
 }
 
 core_legacy.sh() {
 	functionfile="${FUNCNAME[0]}"
 	if [ "$(type fn_fetch_core_dl 2> /dev/null)" ]; then
-		fn_fetch_core_dl "lgsm/modules" "core_legacy.sh" "${modulesdir}" "chmodx" "run" "noforcedl" "nohash"
+		fn_fetch_core_dl "lgsm/functions" "core_legacy.sh" "${functionsdir}" "chmodx" "run" "noforcedl" "nohash"
 	else
-		fn_bootstrap_fetch_file_github "lgsm/modules" "core_legacy.sh" "${modulesdir}" "chmodx" "run" "noforcedl" "nohash"
+		fn_bootstrap_fetch_file_github "lgsm/functions" "core_legacy.sh" "${functionsdir}" "chmodx" "run" "noforcedl" "nohash"
 	fi
 }
 
@@ -289,7 +289,7 @@ mods_core.sh() {
 
 # Dev
 
-command_dev_clear_modules.sh() {
+command_dev_clear_functions.sh() {
 	functionfile="${FUNCNAME[0]}"
 	fn_fetch_function
 }
@@ -615,7 +615,7 @@ query_gamedig.sh() {
 
 # Update
 
-command_update_modules.sh() {
+command_update_functions.sh() {
 	functionfile="${FUNCNAME[0]}"
 	fn_fetch_function
 }
@@ -685,13 +685,13 @@ update_vintagestory.sh() {
 	fn_fetch_function
 }
 
-fn_update_modules.sh() {
+fn_update_functions.sh() {
 	functionfile="${FUNCNAME[0]}"
 	fn_fetch_function
 }
 
 #
-## Installer modules
+## Installer functions
 #
 
 fn_autoinstall() {
