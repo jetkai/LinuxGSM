@@ -15,6 +15,12 @@ for legacy_version in "${legacy_versions_array[@]}"; do
 	fi
 done
 
+functionsdir="${lgsmdir}/modules"
+modulesdir="${lgsmdir}/modules"
+#if [ -d "${lgsmdir}/functions" ]; then
+#	rm -rf "${lgsmdir:?}/functions"
+#fi
+
 if [ -z "${serverfiles}" ]; then
 	serverfiles="${filesdir}"
 fi
