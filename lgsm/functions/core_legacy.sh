@@ -17,9 +17,10 @@ done
 
 functionsdir="${lgsmdir}/modules"
 modulesdir="${lgsmdir}/modules"
-#if [ -d "${lgsmdir}/functions" ]; then
+if [ -d "${lgsmdir}/functions" ]; then
+	command_update_linuxgsm.sh
 #	rm -rf "${lgsmdir:?}/functions"
-#fi
+fi
 
 if [ -z "${serverfiles}" ]; then
 	serverfiles="${filesdir}"
