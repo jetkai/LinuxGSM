@@ -513,4 +513,6 @@ else
 
 	# Enables ANSI colours from core_messages.sh. Can be disabled with ansi=off.
 	fn_ansi_loader
+	getopt=$1
+	core_getopt.sh
 fi

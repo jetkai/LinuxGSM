@@ -3,7 +3,7 @@
 # Author: Daniel Gibbs
 # Contributors: http://linuxgsm.com/contrib
 # Website: https://linuxgsm.com
-# Description: Code for backwards compatability with older versions of LinuxGSM.
+# Description: Code for backwards compatibility with older versions of LinuxGSM.
 
 functionselfname="$(basename "$(readlink -f "${BASH_SOURCE[0]}")")"
 
@@ -19,7 +19,6 @@ functionsdir="${lgsmdir}/modules"
 modulesdir="${lgsmdir}/modules"
 if [ -d "${lgsmdir}/functions" ]; then
 	command_update_linuxgsm.sh
-#	rm -rf "${lgsmdir:?}/functions"
 fi
 
 if [ -z "${serverfiles}" ]; then
