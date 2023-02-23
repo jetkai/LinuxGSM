@@ -587,7 +587,7 @@ fn_info_game_eco() {
 		maxplayers="${zero}"
 		tickrate="${zero}"
 		port="${zero}"
-		webadminport="${zero}"
+		httpport="${zero}"
 	else
 		configip=$(jq -r '.IPAddress' "${servercfgfullpath}")
 		servername=$(jq -r '.Description' "${servercfgfullpath}")
@@ -595,7 +595,7 @@ fn_info_game_eco() {
 		maxplayers=$(jq -r '.MaxConnections' "${servercfgfullpath}")
 		tickrate=$(jq -r '.Rate' "${servercfgfullpath}")
 		port=$(jq -r '.GameServerPort' "${servercfgfullpath}")
-		webadminport=$(jq -r '.WebServerPort' "${servercfgfullpath}")
+		httpport=$(jq -r '.WebServerPort' "${servercfgfullpath}")
 
 		# Not set
 		configip=${configip:-"0.0.0.0"}
@@ -604,7 +604,7 @@ fn_info_game_eco() {
 		maxplayers=${maxplayers=:-"0"}
 		tickrate=${tickrate=:-"0"}
 		port=${port=:-"0"}
-		webadminport=${webadminport=:-"0"}
+		httpport=${httpport=:-"0"}
 	fi
 }
 
@@ -872,7 +872,7 @@ fn_info_game_kf2() {
 		adminpassword=${adminpassword:-"NOT SET"}
 		port=${port:-"0"}
 		webadminenabled=${webadminenabled:-"NOT SET"}
-		httpport=${webadminport:-"0"}
+		httpport=${httpport:-"0"}
 		webadminuser=${webadminuser:-"NOT SET"}
 		webadminpass=${webadminpass:-"NOT SET"}
 	fi
@@ -1674,7 +1674,7 @@ fn_info_game_sdtd() {
 		port3="${zero}"
 		queryport="${zero}"
 		webadminenabled="${unavailable}"
-		webadminport="${zero}"
+		httpport="${zero}"
 		webadminpass="${unavailable}"
 		telnetenabled="${unavailable}"
 		telnetport="${zero}"
@@ -1690,7 +1690,7 @@ fn_info_game_sdtd() {
 		port3=$((port + 2))
 		queryport=${port:-"0"}
 		webadminenabled=$(grep "ControlPanelEnabled" "${servercfgfullpath}" | sed 's/^.*value="//' | cut -f1 -d"\"")
-		webadminport=$(grep "ControlPanelPort" "${servercfgfullpath}" | tr -cd '[:digit:]')
+		httpport=$(grep "ControlPanelPort" "${servercfgfullpath}" | tr -cd '[:digit:]')
 		webadminpass=$(grep "ControlPanelPassword" "${servercfgfullpath}" | sed 's/^.*value="//' | cut -f1 -d"\"")
 		telnetenabled=$(grep "TelnetEnabled" "${servercfgfullpath}" | sed 's/^.*value="//' | cut -f1 -d"\"")
 		telnetport=$(grep "TelnetPort" "${servercfgfullpath}" | tr -cd '[:digit:]')
@@ -1710,7 +1710,7 @@ fn_info_game_sdtd() {
 		port=${port:-"0"}
 		queryport=${queryport:-"0"}
 		webadminenabled=${webadminenabled:-"NOT SET"}
-		webadminport=${webadminport:-"0"}
+		httpport=${httpport:-"0"}
 		webadminpass=${webadminpass:-"NOT SET"}
 		telnetenabled=${telnetenabled:-"NOT SET"}
 		telnetport=${telnetport:-"0"}
@@ -2044,7 +2044,7 @@ fn_info_game_ut99() {
 		queryport="${zero}"
 		queryportgs="${zero}"
 		webadminenabled="${unavailable}"
-		webadminport="${zero}"
+		httpport="${zero}"
 		webadminuser="${unavailable}"
 		webadminpass="${unavailable}"
 	else
@@ -2069,7 +2069,7 @@ fn_info_game_ut99() {
 		beaconport=${beaconport:-"8777"}
 		queryportgs=${queryportgs:-"0"}
 		webadminenabled=${webadminenabled:-"NOT SET"}
-		webadminport=${webadminport:-"0"}
+		httpport=${httpport:-"0"}
 		webadminuser=${webadminuser:-"NOT SET"}
 		webadminpass=${webadminpass:-"NOT SET"}
 	fi
@@ -2088,7 +2088,7 @@ fn_info_game_unreal2() {
 		queryport="${zero}"
 		queryportgs="${zero}"
 		webadminenabled="${unavailable}"
-		webadminport="${zero}"
+		httpport="${zero}"
 		webadminuser="${unavailable}"
 		webadminpass="${unavailable}"
 	else
@@ -2099,7 +2099,7 @@ fn_info_game_unreal2() {
 		queryport=$((port + 1))
 		queryportgs=$(sed -nr 's/^OldQueryPortNumber=(.*)$/\1/p' "${servercfgfullpath}" | tr -cd '[:digit:]')
 		webadminenabled=$(sed -nr 's/^bEnabled=(.*)$/\1/p' "${servercfgfullpath}" | tr -d '=\";,:' | sed 's/\r$//')
-		webadminport=$(sed -nr 's/^ListenPort=(.*)$/\1/p' "${servercfgfullpath}" | tr -cd '[:digit:]')
+		httpport=$(sed -nr 's/^ListenPort=(.*)$/\1/p' "${servercfgfullpath}" | tr -cd '[:digit:]')
 		webadminuser=$(sed -nr 's/^AdminName=(.*)$/\1/p' "${servercfgfullpath}" | tr -d '=\";,:' | sed 's/\r$//')
 		webadminpass="${adminpassword}"
 
@@ -2111,7 +2111,7 @@ fn_info_game_unreal2() {
 		queryport=${queryport:-"0"}
 		queryportgs=${queryportgs:-"0"}
 		webadminenabled=${webadminenabled:-"NOT SET"}
-		webadminport=${webadminport:-"0"}
+		httpport=${httpport:-"0"}
 		webadminuser=${webadminuser:-"NOT SET"}
 		webadminpass=${webadminpass:-"NOT SET"}
 	fi
@@ -2194,7 +2194,7 @@ fn_info_game_ut3() {
 		adminpassword="${unavailable}"
 		maxplayers="${unavailable}"
 		webadminenabled="${unavailable}"
-		webadminport="${zero}"
+		httpport="${zero}"
 		webadminuser="${unavailable}"
 		webadminpass="${unavailable}"
 	else
@@ -2203,7 +2203,7 @@ fn_info_game_ut3() {
 		adminpassword=$(grep "AdminPassword" "${servercfgfullpath}" | sed -e 's/^[ \t]*//g' -e '/^#/d' -e 's/AdminPassword//g' | tr -d '=\";,:' | sed -e 's/^[ \t]*//' -e 's/[ \t]*$//')
 		maxplayers=$(grep "MaxPlayers" "${servercfgfullpath}" | grep -v "#" | tr -cd '[:digit:]')
 		webadminenabled=$(grep "bEnabled" "${servercfgdir}/UTWeb.ini" | sed -e 's/^[ \t]*//g' -e '/^#/d' -e 's/bEnabled//g' | tr -d '=\";,:' | sed -e 's/^[ \t]*//' -e 's/[ \t]*$//')
-		webadminport=$(grep "ListenPort" "${servercfgdir}/UTWeb.ini" | grep -v "#" | tr -cd '[:digit:]')
+		httpport=$(grep "ListenPort" "${servercfgdir}/UTWeb.ini" | grep -v "#" | tr -cd '[:digit:]')
 		webadminuser="Admin"
 		webadminpass=$(grep "AdminPassword" "${servercfgfullpath}" | sed -e 's/^[ \t]*//g' -e '/^#/d' -e 's/AdminPassword//g' | tr -d '=\";,:' | sed -e 's/^[ \t]*//' -e 's/[ \t]*$//')
 
@@ -2213,7 +2213,7 @@ fn_info_game_ut3() {
 		adminpassword=${adminpassword:-"NOT SET"}
 		maxplayers=${maxplayers:-"0"}
 		webadminenabled=${webadminenabled:-"NOT SET"}
-		webadminport=${webadminport:-"0"}
+		httpport=${httpport:-"0"}
 		webadminuser=${webadminuser:-"NOT SET"}
 		webadminpass=${webadminpass:-"NOT SET"}
 	fi
@@ -2321,7 +2321,7 @@ fn_info_game_wf() {
 	# Parameters
 	port=${port:-"0"}
 	queryport="${port:-"0"}"
-	webadminport=${webadminport:-"0"}
+	httpport=${httpport:-"0"}
 }
 
 fn_info_game_wmc() {

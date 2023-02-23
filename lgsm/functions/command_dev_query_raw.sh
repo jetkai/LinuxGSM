@@ -82,12 +82,6 @@ echo -e "=================================================================="
 		echo -e "HTTP Query:"
 	fi
 
-	if [ -v webadminport ]; then
-		echo -e "Web Admin: \t${webadminport} \t$(ss -tupl | grep -c ${webadminport}) \t$(ss -tupl | grep ${webadminport} | grep tcp | awk '{ print $2 }') \t$(ss -tupl | grep ${webadminport} | grep udp | awk '{ print $2 }')"
-	else
-		echo -e "Web Admin:"
-	fi
-
 	if [ -v clientport ]; then
 		echo -e "Client: \t${clientport} \t$(ss -tupl | grep -c ${clientport}) \t$(ss -tupl | grep ${clientport} | grep tcp | awk '{ print $2 }') \t$(ss -tupl | grep ${clientport} | grep udp | awk '{ print $2 }')"
 	else
