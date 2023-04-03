@@ -1,6 +1,7 @@
 #!/bin/bash
-# LinuxGSM alert_email.sh function
+# LinuxGSM alert_email.sh module
 # Author: Daniel Gibbs
+# Contributors: http://linuxgsm.com/contrib
 # Website: https://linuxgsm.com
 # Description: Sends email alert.
 
@@ -9,7 +10,7 @@ functionselfname="$(basename "$(readlink -f "${BASH_SOURCE[0]}")")"
 fn_print_dots "Sending Email alert: ${email}"
 fn_sleep_time
 
-if [ "${emailfrom}" ]; then
+if [ -n "${emailfrom}" ]; then
 	mail -s "${alertsubject}" -r "${emailfrom}" "${email}" < "${alertlog}"
 else
 	mail -s "${alertsubject}" "${email}" < "${alertlog}"

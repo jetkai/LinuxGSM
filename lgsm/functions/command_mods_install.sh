@@ -1,7 +1,7 @@
 #!/bin/bash
-# LinuxGSM command_mods_install.sh function
+# LinuxGSM command_mods_install.sh module
 # Author: Daniel Gibbs
-# Contributor: UltimateByte
+# Contributors: http://linuxgsm.com/contrib
 # Website: https://linuxgsm.com
 # Description: List and installs available mods along with mods_list.sh and mods_core.sh.
 
@@ -21,7 +21,7 @@ if [ "${installedmodscount}" -gt "0" ]; then
 	echo -e "Installed addons/mods"
 	echo -e "================================="
 	# Go through all available commands, get details and display them to the user.
-	for ((llindex=0; llindex < ${#installedmodslist[@]}; llindex++)); do
+	for ((llindex = 0; llindex < ${#installedmodslist[@]}; llindex++)); do
 		# Current mod is the "llindex" value of the array we're going through.
 		currentmod="${installedmodslist[llindex]}"
 		fn_mod_get_info
@@ -40,9 +40,9 @@ compatiblemodslistindex=0
 while [ "${compatiblemodslistindex}" -lt "${#compatiblemodslist[@]}" ]; do
 	# Set values for convenience.
 	displayedmodname="${compatiblemodslist[compatiblemodslistindex]}"
-	displayedmodcommand="${compatiblemodslist[compatiblemodslistindex+1]}"
-	displayedmodsite="${compatiblemodslist[compatiblemodslistindex+2]}"
-	displayedmoddescription="${compatiblemodslist[compatiblemodslistindex+3]}"
+	displayedmodcommand="${compatiblemodslist[compatiblemodslistindex + 1]}"
+	displayedmodsite="${compatiblemodslist[compatiblemodslistindex + 2]}"
+	displayedmoddescription="${compatiblemodslist[compatiblemodslistindex + 3]}"
 	# Output mods to the user.
 	echo -e "${displayedmodname} - ${displayedmoddescription} - ${displayedmodsite}"
 	echo -e " * ${cyan}${displayedmodcommand}${default}"
@@ -65,8 +65,8 @@ while [[ ! " ${availablemodscommands[@]} " =~ " ${usermodselect} " ]]; do
 	echo -en "Enter an ${cyan}addon/mod${default} to ${green}install${default} (or exit to abort): "
 	read -r usermodselect
 	# Exit if user says exit or abort.
-	if [ "${usermodselect}" == "exit" ]||[ "${usermodselect}" == "abort" ]; then
-			core_exit.sh
+	if [ "${usermodselect}" == "exit" ] || [ "${usermodselect}" == "abort" ]; then
+		core_exit.sh
 	# Supplementary output upon invalid user input.
 	elif [[ ! " ${availablemodscommands[@]} " =~ " ${usermodselect} " ]]; then
 		fn_print_error2_nl "${usermodselect} is not a valid addon/mod."
@@ -95,6 +95,18 @@ if [ -f "${modsinstalledlistfullpath}" ]; then
 fi
 
 ## Installation.
+# If amxmodx check if metamod exists first
+if [ "${modcommand}" == "amxmodx" ]; then
+	fn_mod_exist "metamod"
+fi
+
+if [ "${modcommand}" == "amxmodxcs" ] \
+	|| [ "${modcommand}" == "amxmodxdod" ] \
+	|| [ "${modcommand}" == "amxmodxtfc" ] \
+	|| [ "${modcommand}" == "amxmodxns" ] \
+	|| [ "${modcommand}" == "amxmodxts" ]; then
+	fn_mod_exist "amxmodx"
+fi
 
 fn_create_mods_dir
 fn_mods_clear_tmp_dir
@@ -106,6 +118,17 @@ fn_mod_copy_destination
 fn_mod_add_list
 fn_mod_tidy_files_list
 fn_mods_clear_tmp_dir
+
+# Create/modify existing liblist.gam file for Metamod
+if [ "${modcommand}" == "metamod" ]; then
+	fn_mod_install_liblist_gam_file
+fi
+
+# Create/modify plugins.ini file for Metamod
+if [ "${modcommand}" == "amxmodx" ]; then
+	fn_mod_install_amxmodx_file
+fi
+
 echo -e "${modprettyname} installed"
 fn_script_log_pass "${modprettyname} installed."
 

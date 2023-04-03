@@ -1,7 +1,7 @@
 #!/bin/bash
-# LinuxGSM command_install.sh function
+# LinuxGSM command_install.sh module
 # Author: Daniel Gibbs
-# Contributor: UltimateByte
+# Contributors: http://linuxgsm.com/contrib
 # Website: https://linuxgsm.com
 # Description: Overall function for the installer.
 
@@ -11,7 +11,7 @@ functionselfname="$(basename "$(readlink -f "${BASH_SOURCE[0]}")")"
 fn_firstcommand_set
 
 check.sh
-if [ "$(whoami)" = "root" ]; then
+if [ "$(whoami)" == "root" ] && [ ! -f /.dockerenv ]; then
 	check_deps.sh
 else
 	install_header.sh

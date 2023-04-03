@@ -1,6 +1,7 @@
 #!/bin/bash
-# LinuxGSM install_logs.sh function
+# LinuxGSM install_logs.sh module
 # Author: Daniel Gibbs
+# Contributors: http://linuxgsm.com/contrib
 # Website: https://linuxgsm.com
 # Description: Creates log directories.
 
@@ -58,7 +59,7 @@ if [ "${consolelogdir}" ]; then
 fi
 
 # Create Game logs.
-if [ "${gamelogdir}" ]&&[ ! -d "${gamelogdir}" ]; then
+if [ "${gamelogdir}" ] && [ ! -d "${gamelogdir}" ]; then
 	echo -en "installing game log dir: ${gamelogdir}..."
 	if ! mkdir -p "${gamelogdir}"; then
 		fn_print_fail_eol_nl

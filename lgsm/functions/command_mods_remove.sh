@@ -1,7 +1,7 @@
 #!/bin/bash
-# LinuxGSM command_mods_uninstall.sh function
+# LinuxGSM command_mods_uninstall.sh module
 # Author: Daniel Gibbs
-# Contributor: UltimateByte
+# Contributors: http://linuxgsm.com/contrib
 # Website: https://linuxgsm.com
 # Description: Uninstall mods along with mods_list.sh and mods_core.sh.
 
@@ -21,7 +21,7 @@ echo -e "================================="
 # Displays list of installed mods.
 # Generates list to display to user.
 fn_mods_installed_list
-for ((mlindex=0; mlindex < ${#installedmodslist[@]}; mlindex++)); do
+for ((mlindex = 0; mlindex < ${#installedmodslist[@]}; mlindex++)); do
 	# Current mod is the "mlindex" value of the array we are going through.
 	currentmod="${installedmodslist[mlindex]}"
 	# Get mod info.
@@ -36,8 +36,8 @@ while [[ ! " ${installedmodslist[@]} " =~ " ${usermodselect} " ]]; do
 	echo -en "Enter an ${cyan}addon/mod${default} to ${red}remove${default} (or exit to abort): "
 	read -r usermodselect
 	# Exit if user says exit or abort.
-	if [ "${usermodselect}" == "exit" ]||[ "${usermodselect}" == "abort" ]; then
-			core_exit.sh
+	if [ "${usermodselect}" == "exit" ] || [ "${usermodselect}" == "abort" ]; then
+		core_exit.sh
 	# Supplementary output upon invalid user input.
 	elif [[ ! " ${availablemodscommands[@]} " =~ " ${usermodselect} " ]]; then
 		fn_print_error2_nl "${usermodselect} is not a valid addon/mod."
@@ -68,9 +68,9 @@ while [ "${modfileline}" -le "${modsfilelistsize}" ]; do
 	currentfileremove=$(sed "${modfileline}q;d" "${modsdir}/${modcommand}-files.txt")
 	# If file or directory exists, then remove it.
 
-	if [ -f "${modinstalldir}/${currentfileremove}" ]||[ -d "${modinstalldir}/${currentfileremove}" ]; then
+	if [ -f "${modinstalldir}/${currentfileremove}" ] || [ -d "${modinstalldir}/${currentfileremove}" ]; then
 		rm -rf "${modinstalldir:?}/${currentfileremove:?}"
-		((exitcode=$?))
+		((exitcode = $?))
 		if [ "${exitcode}" != 0 ]; then
 			fn_script_log_fatal "Removing ${modinstalldir}/${currentfileremove}"
 			break
@@ -78,21 +78,30 @@ while [ "${modfileline}" -le "${modsfilelistsize}" ]; do
 			fn_script_log_pass "Removing ${modinstalldir}/${currentfileremove}"
 		fi
 	fi
-	tput rc; tput el
+	tput rc
+	tput el
 	echo -e "removing ${modprettyname} ${modfileline} / ${modsfilelistsize} : ${currentfileremove}..."
 	((modfileline++))
 done
-if [ "${exitcode}" != 0 ]; then
-	fn_print_fail_eol_nl
-	core_exit.sh
+
+# Added logic not to fail since removing game specific mods (amxmodxcs) removes files that will
+# not be found when removing the base (amxmodx) mod
+if [ "${modcommand}" != "amxmodx" ]; then
+	if [ "${exitcode}" != 0 ]; then
+		fn_print_fail_eol_nl
+		core_exit.sh
+	else
+		fn_print_ok_eol_nl
+	fi
 else
 	fn_print_ok_eol_nl
 fi
+
 # Remove file list.
 echo -en "removing ${modcommand}-files.txt..."
 fn_sleep_time
 rm -rf "${modsdir:?}/${modcommand}-files.txt"
-local exitcode=$?
+exitcode=$?
 if [ "${exitcode}" != 0 ]; then
 	fn_script_log_fatal "Removing ${modsdir}/${modcommand}-files.txt"
 	fn_print_fail_eol_nl
@@ -107,7 +116,7 @@ echo -en "removing ${modcommand} from ${modsinstalledlist}..."
 fn_sleep_time
 
 sed -i "/^${modcommand}$/d" "${modsinstalledlistfullpath}"
-local exitcode=$?
+exitcode=$?
 if [ "${exitcode}" != 0 ]; then
 	fn_script_log_fatal "Removing ${modcommand} from ${modsinstalledlist}"
 	fn_print_fail_eol_nl
@@ -119,7 +128,7 @@ fi
 
 # Oxide fix
 # Oxide replaces server files, so a validate is required after uninstall.
-if [ "${engine}" == "unity3d" ]&&[[ "${modprettyname}" == *"Oxide"* ]]; then
+if [ "${engine}" == "unity3d" ] && [[ "${modprettyname}" == *"Oxide"* ]]; then
 	fn_print_information_nl "Validating to restore original ${gamename} files replaced by Oxide"
 	fn_script_log "Validating to restore original ${gamename} files replaced by Oxide"
 	exitbypass="1"
@@ -127,6 +136,17 @@ if [ "${engine}" == "unity3d" ]&&[[ "${modprettyname}" == *"Oxide"* ]]; then
 	fn_firstcommand_reset
 	unset exitbypass
 fi
+
+# Remove/modify existing liblist.gam file for Metamod
+if [ "${modcommand}" == "metamod" ]; then
+	fn_mod_remove_liblist_gam_file
+fi
+
+# Remove/modify plugins.ini file for AMX Mod X
+if [ "${modcommand}" == "amxmodx" ]; then
+	fn_mod_remove_amxmodx_file
+fi
+
 echo -e "${modprettyname} removed"
 fn_script_log "${modprettyname} removed"
 

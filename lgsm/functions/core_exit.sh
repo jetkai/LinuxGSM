@@ -1,12 +1,13 @@
 #!/bin/bash
-# LinuxGSM core_exit.sh function
+# LinuxGSM core_exit.sh module
 # Author: Daniel Gibbs
+# Contributors: http://linuxgsm.com/contrib
 # Website: https://linuxgsm.com
 # Description: Handles exiting of LinuxGSM by running and reporting an exit code.
 
 functionselfname="$(basename "$(readlink -f "${BASH_SOURCE[0]}")")"
 
-fn_exit_dev_debug(){
+fn_exit_dev_debug() {
 	if [ -f "${rootdir}/.dev-debug" ]; then
 		echo -e ""
 		echo -e "${functionselfname} exiting with code: ${exitcode}"
@@ -17,14 +18,14 @@ fn_exit_dev_debug(){
 }
 
 # If running dependency check as root will remove any files that belong to root user.
-if [ "$(whoami)" == "root" ]; then
+if [ "$(whoami)" == "root" ] && [ ! -f /.dockerenv ]; then
 	find "${lgsmdir}"/ -group root -prune -exec rm -rf {} + > /dev/null 2>&1
 	find "${logdir}"/ -group root -prune -exec rm -rf {} + > /dev/null 2>&1
 fi
 
 if [ "${exitbypass}" ]; then
 	unset exitbypass
-elif [ "${exitcode}" ]&&[ "${exitcode}" != "0" ]; then
+elif [ "${exitcode}" != "0" ]; then
 	# List LinuxGSM version in logs
 	fn_script_log_info "LinuxGSM version: ${version}"
 	if [ "${exitcode}" == "1" ]; then
@@ -40,7 +41,7 @@ elif [ "${exitcode}" ]&&[ "${exitcode}" != "0" ]; then
 	# remove trap.
 	trap - INT
 	exit "${exitcode}"
-elif [ "${exitcode}" ]&&[ "${exitcode}" == "0" ]; then
+elif [ "${exitcode}" ] && [ "${exitcode}" == "0" ]; then
 	# List LinuxGSM version in logs
 	fn_script_log_info "LinuxGSM version: ${version}"
 	fn_script_log_pass "${functionselfname} exiting with code: ${exitcode}"

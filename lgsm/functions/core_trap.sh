@@ -1,12 +1,13 @@
 #!/bin/bash
-# LinuxGSM core_trap.sh function
+# LinuxGSM core_trap.sh module
 # Author: Daniel Gibbs
+# Contributors: http://linuxgsm.com/contrib
 # Website: https://linuxgsm.com
 # Description: Handles CTRL-C trap to give an exit code.
 
 functionselfname="$(basename "$(readlink -f "${BASH_SOURCE[0]}")")"
 
-fn_exit_trap(){
+fn_exit_trap() {
 	if [ -z "${exitcode}" ]; then
 		exitcode=$?
 	fi

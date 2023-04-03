@@ -1,6 +1,7 @@
 #!/bin/bash
-# LinuxGSM fix_csgo.sh function
+# LinuxGSM fix_csgo.sh module
 # Author: Daniel Gibbs
+# Contributors: http://linuxgsm.com/contrib
 # Website: https://linuxgsm.com
 # Description: Resolves various issues with CS:GO.
 
@@ -28,5 +29,14 @@ if [ -f "${servercfgdir}/valve.rc" ] && grep -E '^\s*exec\s*(default|joystick)\.
 	fn_fix_msg_start
 	sed -i 's/^\s*exec\s*default.cfg/\/\/exec default.cfg/g' "${servercfgdir}/valve.rc" > /dev/null 2>&1
 	sed -i 's/^\s*exec\s*joystick.cfg/\/\/exec joystick.cfg/g' "${servercfgdir}/valve.rc" > /dev/null 2>&1
+	fn_fix_msg_end
+fi
+
+# Fixes: Detected engine 11 but could not load: /home/csgo/serverfiles/bin/libgcc_s.so.1: version `GCC_7.0.0' not found (required by /lib/i386-linux-gnu/libstdc++.so.6)
+libgccc_so="${serverfiles}/bin/libgcc_s.so.1"
+if [ -f "${libgccc_so}" ]; then
+	fixname="libgcc_s.so.1 move away"
+	fn_fix_msg_start
+	mv -v "${libgccc_so}" "${libgccc_so}.bck"
 	fn_fix_msg_end
 fi
