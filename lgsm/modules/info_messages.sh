@@ -285,6 +285,11 @@ fn_info_message_gameserver() {
 			echo -e "${lightblue}Display IP:\t${default}${displayip}:${port}"
 		fi
 
+		# Server password enabled (Craftopia)
+		if [ -n "${serverpasswordenabled}" ]; then
+			echo -e "${lightblue}Server password enabled:\t${default}${serverpasswordenabled}"
+		fi
+
 		# Server password
 		if [ -n "${serverpassword}" ]; then
 			echo -e "${lightblue}Server password:\t${default}${serverpassword}"
@@ -664,7 +669,7 @@ fn_info_message_ports_edit() {
 
 	startparameterslocation="${red}UNKNOWN${default}"
 	# engines/games that require editing in the config file.
-	local ports_edit_array=("ac" "arma3" "armar" "bo" "bt" "cd" "dst" "eco" "idtech2" "idtech3" "idtech3_ql" "jc2" "jc3" "lwjgl2" "mcb" "nec" "pc" "pc2" "prism3d" "pz" "qw" "refractor" "renderware" "rw" "sb" "sdtd" "st" "stn" "ts3" "tw" "terraria" "unreal" "unreal2" "unreal3" "vints" "wurm")
+	local ports_edit_array=("ac" "arma3" "armar" "bo" "bt" "cd" "ct" "dst" "eco" "idtech2" "idtech3" "idtech3_ql" "jc2" "jc3" "lwjgl2" "mcb" "nec" "pc" "pc2" "prism3d" "pz" "qw" "refractor" "renderware" "rw" "sb" "sdtd" "st" "stn" "ts3" "tw" "terraria" "unreal" "unreal2" "unreal3" "vints" "wurm")
 	for port_edit in "${ports_edit_array[@]}"; do
 		if [ "${shortname}" == "ut3" ]; then
 			startparameterslocation="${servercfgdir}/UTWeb.ini"
@@ -675,7 +680,7 @@ fn_info_message_ports_edit() {
 		fi
 	done
 	# engines/games that require editing the start parameters.
-	local ports_edit_array=("av" "ck" "col" "fctr" "goldsrc" "hw" "iw3.0" "ioquake3" "qfusion" "rust" "scpsl" "scpslsm" "sol" "spark" "source" "unreal4" "arma3" "dayz" "unt" "vh")
+	local ports_edit_array=("av" "ck" "col" "fctr" "goldsrc" "hcu" "hw" "iw3.0" "ioquake3" "qfusion" "rust" "scpsl" "scpslsm" "sol" "spark" "source" "unreal4" "arma3" "dayz" "unt" "vh")
 	for port_edit in "${ports_edit_array[@]}"; do
 		if [ "${engine}" == "${port_edit}" ] || [ "${gamename}" == "${port_edit}" ] || [ "${shortname}" == "${port_edit}" ]; then
 			startparameterslocation="${configdirserver}"
@@ -964,7 +969,15 @@ fn_info_message_csgo() {
 	} | column -s $'\t' -t
 }
 
-fn_info_message_dayz() {
+fn_info_message_ct(){
+	fn_info_message_password_strip
+	{
+		fn_port "header"
+		fn_port "Game" port udp
+	} | column -s $'\t' -t
+}
+
+fn_info_message_dayz(){
 	{
 		fn_port "header"
 		fn_port "Game" port udp
@@ -1024,7 +1037,7 @@ fn_info_message_goldsrc() {
 	} | column -s $'\t' -t
 }
 
-fn_ingo_message_hcu(){
+fn_info_message_hcu(){
 	{
 		fn_port "header"
 		fn_port "Game" port udp
@@ -1398,7 +1411,6 @@ fn_info_message_sdtd() {
 	{
 		echo -e "${lightblue}Web Interface enabled:\t${default}${httpenabled}"
 		echo -e "${lightblue}Web Interface url:\t${default}http://${httpip}:${httpport}/index.html"
-		echo -e "${lightblue}Web Interface username:\t${default}${httpuser}"
 		echo -e "${lightblue}Web Interface password:\t${default}${httppassword}"
 	} | column -s $'\t' -t
 	echo -e ""
@@ -1719,6 +1731,8 @@ fn_info_message_select_engine() {
 		fn_info_message_codwaw
 	elif [ "${shortname}" == "col" ]; then
 		fn_info_message_col
+	elif [ "${shortname}" == "ct" ]; then
+		fn_info_message_ct
 	elif [ "${shortname}" == "dayz" ]; then
 		fn_info_message_dayz
 	elif [ "${shortname}" == "dodr" ]; then
@@ -1731,6 +1745,8 @@ fn_info_message_select_engine() {
 		fn_info_message_etl
 	elif [ "${shortname}" == "fctr" ]; then
 		fn_info_message_fctr
+	elif [ "${shortname}" == "hcu" ]; then
+		fn_info_message_hcu
 	elif [ "${shortname}" == "hw" ]; then
 		fn_info_message_hw
 	elif [ "${shortname}" == "ins" ]; then
